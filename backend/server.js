@@ -151,10 +151,43 @@ app.post('/contacts', authorize, checkContact, (req, res)=>{
 
 // change existing contacts
 app.put('/contacts', authorize, checkContact, (req, res)=>{
-    
+    // there is a potential issue here that the user can update contacts
+    // that they did not create themselves
+        // but really to do that, they need access to the id of that specific entry
+        // and the layout of the server as it currently stands will only
+        // send out contacts that are populated through that user's document
+        // which means that only you should have the ids of your contacts
+    Contact.findByIdAndUpdate(req.body.id, {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            phone: req.body.phone,
+            email: req.body.email
+        })
+        .then(()=>{
+            return User.findById(req.user.id).populate('contacts')
+        })
+        .then(userData=>{
+            res.json(userData.contacts);
+        })
+        .catch(error=>{
+            console.log(error);
+            res.send('something went wrong');
+        });
+});
+
+app.delete('/contacts', authorize, (req, res)=>{
+    Contact.findByIdAndRemove(req.body.id)
+        .then(()=>{
+            return User.findByIdAndUpdate(req.user.id, {$pull: {contacts: req.body.id}})
+        })
+        .then(newContacts=>{
+            res.json(newContacts.contacts);
+        })
+        .catch(error=>{
+            console.log(error);
+            res.send('something went wrong');
+        });
 })
-
-
 
 app.listen(8080, ()=>{
     console.log('server on 8080');
