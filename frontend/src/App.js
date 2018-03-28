@@ -21,17 +21,17 @@ class App extends Component {
   }
 
   login = (username, password)=>{
-    // axios.
+    axios.post('/login', {username: username, password: password})
   }
 
   render() {
     return (
       <div className="App">
-        <div className="row container">
+        <div className="row container center-align">
           <Switch>
             <Route exact path='/' render={(props)=>{return localStorage.getItem('jwt') ? <List />
                                                                                        : <Redirect to='/login' />}} />
-            <Route path='/login' render={(props)=>{return !localStorage.getItem('jwt') ? <Login />
+            <Route path='/login' render={(props)=>{return !localStorage.getItem('jwt') ? <Login register={this.register} login={this.login} />
                                                                                        : <Redirect to='/' />}} />
           </Switch>
         </div>
