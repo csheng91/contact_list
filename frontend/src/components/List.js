@@ -5,7 +5,7 @@ import GroupHeader from './GroupHeader';
 class List extends Component{
     render(){
         return(
-            <div>
+            <div className="col s12" >
                 <GroupHeader />
                 <hr />
                 <Group />
