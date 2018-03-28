@@ -4,7 +4,7 @@ function Contact(){
     return(
         <li>
             <div className="collapsible-header" >Contact Name</div>
-            <div className="collapsible-body" >
+            <div className="collapsible-body left-align" >
                 <p><b>Phone: </b> 000-000-0000</p>
                 <p><b>Email: </b> myemail@emails.com</p>
             </div>
