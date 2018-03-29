@@ -79,10 +79,10 @@ app.post('/register', (req, res)=>{
             }).then(savedUser=>{
                 console.log(savedUser);
                 // this needs to send authorization key, probably a jwt
-                res.send('new user');
+                res.send('success');
             }).catch(error=>{
                 console.log(error);
-                res.send('something went wrong');
+                res.send(error.name);
             });
     }
 });
@@ -92,25 +92,30 @@ app.post('/login', (req, res)=>{
         .then(response=>{
             // not returning the promise for chaining because
             // the res needs access to the original find response
-            bcrypt.compare(req.body.password, response.hash, (error, match)=>{
-                if (error){
-                    console.log(error);
-                    // return to kick us out of the function in error case
-                    return res.status(500).send('server error');
-                }
+            if (response){
+                bcrypt.compare(req.body.password, response.hash, (error, match)=>{
+                    if (error){
+                        console.log(error);
+                        // return to kick us out of the function in error case
+                        return res.status(500).send('server error');
+                    }
 
-                if(!match){
-                    res.status(401).send("invalid credentials");
-                }else{
-                    const payload = {id: response.id},
-                          token   = jwt.sign(payload, config.jwt, {expiresIn: '1d'});
+                    if(!match){
+                        res.status(401).send("invalid credentials");
+                    }else{
+                        const payload = {id: response.id},
+                            token   = jwt.sign(payload, config.jwt, {expiresIn: '1d'});
 
-                    res.json({jwt: token});
-                }
-            })
+                        res.json({jwt: token});
+                    }
+                })
+            }else{
+                res.status(401).send("invalid credentials");
+            }
         })
         .catch(error=>{
             console.log(error);
+            res.send('something went wrong');
         })
 });
 
