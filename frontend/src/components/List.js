@@ -4,20 +4,39 @@ import GroupHeader from './GroupHeader';
 
 class List extends Component{
     render(){
-        let contactGroups = this.props.contacts.reduce((accu, curr)=>{
-            if (accu[curr.firstName.charAt(0).toUpperCase]){
-                accu[curr.firstName.charAt(0).toUpperCase].push(curr);
-            }else{
-                accu[curr.firstName.charAt(0).toUpperCase] = [curr];
-            }
-            return accu;
-        }, {});
-        console.log(contactGroups);
+        let contactGroups = this.props.contacts
+            .sort((a, b)=>{
+                if (a.firstName.toUpperCase() < b.firstName.toUpperCase()){
+                    return -1;
+                }
+                if (a.firstName.toUpperCase() > b.firstName.toUpperCase()){
+                    return 1;
+                }
+                return 0;
+            })
+            .reduce((accu, curr)=>{
+                let firstLetter = curr.firstName.charAt(0).toUpperCase();
+                if (accu[firstLetter]){
+                    accu[firstLetter].push(curr);
+                }else{
+                    accu[firstLetter] = [curr];
+                }
+                return accu;
+            }, {});
+
+        let allContacts = [];
+        for (let firstLetter in contactGroups){
+            allContacts.push(
+                <div className="col s12" >
+                    <GroupHeader firstLetter={firstLetter} />
+                    <hr />
+                    <Group contacts={contactGroups[firstLetter]} />
+                </div>
+            );
+        }
         return(
-            <div className="col s12" >
-                <GroupHeader />
-                <hr />
-                <Group />
+            <div>
+                {allContacts}
             </div>
         )
     }
