@@ -8,7 +8,7 @@ const express = require('express'),
       mongoose = require('mongoose');
 
 
-// parser for CRUD, cors for same IP issues
+// parser for CRUD, cors to handle cors
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -104,7 +104,7 @@ app.post('/login', (req, res)=>{
                         res.status(401).send("invalid credentials");
                     }else{
                         const payload = {id: response.id},
-                            token   = jwt.sign(payload, config.jwt, {expiresIn: '1d'});
+                            token   = jwt.sign(payload, config.jwt, {expiresIn: '7d'});
 
                         res.json({jwt: token});
                     }
@@ -146,7 +146,10 @@ app.post('/contacts', authorize, checkContact, (req, res)=>{
             return User.findByIdAndUpdate(req.user.id, {$push: {contacts: savedContact}}, {new: true})
         })
         .then(updatedUser=>{
-            res.json(updatedUser);
+            return User.findById(req.user.id).populate('contacts');
+        })
+        .then(userData=>{
+            res.json(userData.contacts);
         })
         .catch(error=>{
             console.log(error);
@@ -185,8 +188,11 @@ app.delete('/contacts', authorize, (req, res)=>{
         .then(()=>{
             return User.findByIdAndUpdate(req.user.id, {$pull: {contacts: req.body.id}})
         })
-        .then(newContacts=>{
-            res.json(newContacts.contacts);
+        .then(()=>{
+            return User.findById(req.user.id).populate('contacts')
+        })
+        .then(userData=>{
+            res.json(userData.contacts);
         })
         .catch(error=>{
             console.log(error);

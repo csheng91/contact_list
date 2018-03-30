@@ -11,6 +11,11 @@ class Login extends Component{
         }
     }
 
+    // need to reinitiate materialize when DOM changes
+    componentDidMount(){
+        window.M.AutoInit();        
+    }
+
     typeHandle = (event)=>{
         this.setState({
             [event.target.id]: event.target.value
@@ -33,12 +38,12 @@ class Login extends Component{
                                 <p style={this.props.logError ? {color: "red", display: "block"} : {display: "none"}} >Invalid credentials</p>
                                 <div className="input-field">
                                     <input id="username" type="text" required minLength="4" maxLength="12" className="validate" value={this.state.username} onChange={this.typeHandle} />
-                                    <label for="username">Username</label>
+                                    <label htmlFor="username">Username</label>
                                     <span className="helper-text" data-error="Username must be between 4 and 12 characters" />
                                 </div>
                                 <div className="input-field">
                                     <input id="password" type="password" required minLength="7" maxLength="20" className="validate" value={this.state.password} onChange={this.typeHandle} />
-                                    <label for="password">Password</label>
+                                    <label htmlFor="password">Password</label>
                                     <span className="helper-text" data-error="Password must be between 7 and 20 characters" />
                                 </div>
                             </div>
