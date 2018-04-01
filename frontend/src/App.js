@@ -98,6 +98,7 @@ class App extends Component {
           this.setState({contacts: response.data});
           stateReset();
           modal.M_Modal.close();
+          window.$('.collapsible').collapsible('close');
         })
         .catch(error=>{
           console.log(error);
@@ -112,6 +113,7 @@ class App extends Component {
                               headers: {"jwt": localStorage.getItem("jwt")}})
       .then(response=>{
         this.setState({contacts: response.data});
+        window.$('.collapsible').collapsible('close');
       })
       .catch(error=>{
         console.log(error);

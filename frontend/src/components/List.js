@@ -19,7 +19,7 @@ class List extends Component{
 
     // need to reinitiate materialize when DOM changes
     componentDidMount(){
-        window.M.AutoInit();        
+        window.M.AutoInit();
     }
 
     typeHandle = (event)=>{
