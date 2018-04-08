@@ -10,6 +10,11 @@ class Register extends Component{
         }
     }
 
+    // need to reinitiate materialize when DOM changes
+    componentDidMount(){
+        window.M.AutoInit();        
+    }
+
     typeHandle = (event)=>{
         this.setState({
             [event.target.id]: event.target.value
@@ -18,9 +23,7 @@ class Register extends Component{
 
     submitRegister = (event)=>{
         event.preventDefault();
-        console.log(event);
-        // event.preventDefault();
-        // this.props.register(this.state.newUsername, this.state.newPassword, this.registerModal);
+        this.props.register(this.state.newUsername, this.state.newPassword, this.registerModal);
     }
 
     render(){
@@ -28,7 +31,7 @@ class Register extends Component{
             <div id="registeruser" className="modal" ref={input=>{this.registerModal = input}} >
                 <form onSubmit={this.submitRegister} >
                     <div className="modal-content">
-                        <p style={this.props.regError ? {color: "red", display: "block"} : {display: "none"}} >This username is already taken</p>
+                        <p style={this.props.error ? {color: "red", display: "block"} : {display: "none"}} >This username is already taken</p>
                         <div className="input-field">
                             <input id="newUsername" type="text" required minLength="4" maxLength="12" className="validate" value={this.state.newUsername} onChange={this.typeHandle} />
                             <label for="newUsername">Username</label>

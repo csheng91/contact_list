@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Register from './Register';
 
 class Login extends Component{
 
@@ -9,11 +8,6 @@ class Login extends Component{
             username: "",
             password: ""
         }
-    }
-
-    // need to reinitiate materialize when DOM changes
-    componentDidMount(){
-        window.M.AutoInit();        
     }
 
     typeHandle = (event)=>{
@@ -35,7 +29,7 @@ class Login extends Component{
                     <div className="card">
                         <form onSubmit={this.submitLogin} >
                             <div className="card-content" >
-                                <p style={this.props.logError ? {color: "red", display: "block"} : {display: "none"}} >Invalid credentials</p>
+                                <p style={this.props.error ? {color: "red", display: "block"} : {display: "none"}} >Invalid credentials</p>
                                 <div className="input-field">
                                     <input id="username" type="text" required minLength="4" maxLength="12" className="validate" value={this.state.username} onChange={this.typeHandle} />
                                     <label htmlFor="username">Username</label>
@@ -60,7 +54,6 @@ class Login extends Component{
                             <button className="waves-effect waves-light btn modal-trigger" style={{minWidth: 60 + "%"}} href="#registeruser" >Register</button>
                         </div>
                     </div>
-                    <Register register={this.props.register} regError={this.props.regError} />
                 </div>
             </div>
         )

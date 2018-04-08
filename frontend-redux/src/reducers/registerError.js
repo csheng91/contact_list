@@ -9,7 +9,7 @@ const registerError = (state = false, action) =>{
             return action.error;
         default:
             return state;
-    };
+    }
 };
 
 export default registerError;

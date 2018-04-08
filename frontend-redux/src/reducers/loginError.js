@@ -9,7 +9,7 @@ const loginError = (state = false, action) =>{
             return action.error;
         default:
             return state;
-    };
+    }
 };
 
 export default loginError;

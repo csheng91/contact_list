@@ -49,6 +49,17 @@ class List extends Component{
         });
     }
 
+    logout = ()=>{
+        localStorage.removeItem('jwt');
+        this.setState({
+          contacts: [],
+          regError: false,
+          logError: false,
+          newConError: false,
+          editError: false
+        })
+      }
+
     render(){
         let contactGroups = this.props.contacts
             .sort((a, b)=>{
