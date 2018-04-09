@@ -34,7 +34,7 @@ class AddContact extends Component{
             <div id="addContact" className="modal" ref={input=>{this.contactModal = input}} >
                 <form onSubmit={this.submitContact} >
                     <div className="modal-content">
-                        <p style={this.props.newConError ? {color: "red", display: "block"} : {display: "none"}} >Contact must have a first or last name</p>
+                        <p style={this.props.error ? {color: "red", display: "block"} : {display: "none"}} >Contact must have a first or last name</p>
                         <div className="input-field col s6">
                             <input id="firstName" type="text" className="validate" value={this.state.firstName} onChange={this.typeHandle} />
                             <label htmlFor="firstName">First Name</label>

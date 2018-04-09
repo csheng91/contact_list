@@ -28,6 +28,7 @@ connection.on('open', ()=>{
 // middleware to authenticate jwt and provide authorization
 // to access the db data on this user
 authorize = (req, res, next)=>{
+    // console.log('authorize')
     let token = req.headers.jwt;
     jwt.verify(token, config.jwt, (error, payload)=>{
         if (error){
@@ -63,7 +64,7 @@ checkContact = (req, res, next)=>{
 app.post('/register', (req, res)=>{
     // this check is somewhat arbitrary, currently only checking lengths
     // in theory could use regex to check for character types as well
-    console.log(req.body);
+    // console.log(req.body);
     if (req.body.username.length < 4){
         res.send('username must be at least 4 characters long');
     }else if (req.body.password.length < 7){

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Group from './Group';
 import GroupHeader from './GroupHeader';
-import AddContact from './AddContact';
 import EditContact from './EditContact';
 
 class List extends Component{
@@ -20,6 +19,10 @@ class List extends Component{
     // need to reinitiate materialize when DOM changes
     componentDidMount(){
         window.M.AutoInit();
+        // an extra get request for when users don't directly log in
+        if (this.props.contacts.length === 0) {
+            this.props.getContacts();
+        }
     }
 
     typeHandle = (event)=>{
@@ -29,7 +32,6 @@ class List extends Component{
     }
 
     editClick = (contactId, first, last, phoneNum, emailAdr)=>{
-        console.log(first, last, phoneNum, emailAdr);
         this.setState({
             editId: contactId,
             editFirst: first,
@@ -48,17 +50,6 @@ class List extends Component{
             editEmail: ""
         });
     }
-
-    logout = ()=>{
-        localStorage.removeItem('jwt');
-        this.setState({
-          contacts: [],
-          regError: false,
-          logError: false,
-          newConError: false,
-          editError: false
-        })
-      }
 
     render(){
         let contactGroups = this.props.contacts
@@ -96,7 +87,6 @@ class List extends Component{
                 {allContacts}
                 <button className="btn-floating btn-large waves-effect waves-light red modal-trigger" style={{position: "fixed", bottom: 50, right: 50}} href="#addContact" ><i className="material-icons">add</i></button>
                 <button className="waves-effect waves-light btn red" onClick={this.props.logout} >Logout</button>
-                <AddContact newContact={this.props.newContact} newConError={this.props.newConError} />
                 <EditContact editId={this.state.editId} editFirst={this.state.editFirst} editLast={this.state.editLast} editPhone={this.state.editPhone} editEmail={this.state.editEmail} typeHandle={this.typeHandle} resetState={this.resetState} editContact={this.props.editContact} editError={this.props.editError} />
             </div>
         )

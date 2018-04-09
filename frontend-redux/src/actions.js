@@ -67,21 +67,21 @@ export const login = (username, password) => {
                 response => {
                     dispatch(loginError(false));
                     localStorage.setItem("jwt", response.data.jwt);
-                    return axios.get('/contacts', {headers: {"jwt": localStorage.getItem("jwt")}});
+                    return axios.get('/contacts', {headers: {"jwt": localStorage.getItem("jwt")}})
+                        .then(
+                            response => {
+                                dispatch(updtContacts(response.data));
+                            },
+                            error => {
+                                console.log(error);
+                            }
+                        )
                 },
                 error => {
                     console.log(error);
                     dispatch(loginError(true));
                 }
             )
-            .then(
-                response => {
-                    dispatch(updtContacts(response.data));
-                },
-                error => {
-                    console.log(error);
-                }
-            );
     }
 }
 
@@ -141,7 +141,7 @@ export const editContact = (id, firstName, lastName, phone, email, modal, formRe
 
 export const delContact = (id) => {
     return dispatch => {
-        axios.delete('/contacts', {data: {id: id},
+        return axios.delete('/contacts', {data: {id: id},
                                    headers: {"jwt": localStorage.getItem("jwt")}})
             .then(
                 response => {
@@ -152,5 +152,19 @@ export const delContact = (id) => {
                     console.log(error)
                 }
             );
+    }
+}
+
+export const getContacts = () => {
+    return dispatch => {
+        return axios.get('/contacts', {headers: {"jwt": localStorage.getItem("jwt")}})
+            .then(
+                response => {
+                    dispatch(updtContacts(response.data));
+                },
+                error => {
+                    console.log(error);
+                }
+            )
     }
 }

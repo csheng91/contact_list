@@ -6,7 +6,6 @@ import Register from '../components/Register';
 
 class Authenticate extends Component {
     render() {
-        console.log(this.props);
         return (
             <div>
                 <Login error={this.props.loginError} login={this.props.loginSubmit} />
